@@ -1,11 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks List</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Tarefas
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'home-page' %}">Página inicial</a> |
+    <a href="{% url 'create_task' %}">Adicionar tarefa</a>
+    <h1>Lista de Tarefas</h1>
+    <div>
+        <a href="{% url 'tasks_list' %}">Todas</a> |
+        <a href="{% url 'tasks_list' %}?status=completed">Concluídas</a> |
+        <a href="{% url 'tasks_list' %}?status=pending">Pendentes</a> |
+        <a href="{% url 'create_task' %}">Adicionar tarefa</a>
+    </div>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task }} 
+                
+                {% if task.completed %}
+                    <span style="color: green;">(Concluída)</span>
+                {% else %}
+                    <span style="color: red;">(Pendente)</span>
+                {% endif %}
+
+                <form method="post" action="{% url 'toggle_task_completion' task.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    {% if not task.completed %}
+                        <button type="submit">Marcar como concluída</button>
+                    {% else %}
+                        <button type="submit">Marcar como pendente</button>
+                    {% endif %}
+                </form>
+
+                <a href="{% url 'edit_task' task.id %}">Editar</a>
+
+                <form method="post" action="{% url 'delete_task' task.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                    {% csrf_token %}
+                    <button type="submit">Deletar</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function confirmDelete() {
+            return confirm('Tem certeza de que deseja excluir esta tarefa?');
+        }
+    </script>
+
+{% endblock %}
