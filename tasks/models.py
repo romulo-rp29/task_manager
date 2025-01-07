@@ -12,6 +12,6 @@ class Task(models.Model):
     due_date = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
-        formatted_date = localtime(self.due_date).strftime("%d/%m/%Y %H:%M:%S")
+        formatted_date = localtime(self.due_date).strftime("%d/%m/%Y %H:%M")
         return f"{
             self.title} - {self.description} - {formatted_date}"
