@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
-</head>
-<body>
-    <h1> Gerenciador de tarefas </h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Gerenciador de tarefas
+{% endblock %}
+
+{% block content %}
+                <h1>Gerenciador de tarefas</h1>
+            <h2>Tarefas:</h2>
+            <ul>
+                {% for task in tasks %}
+                    <li>{{ task }}</li>
+                {% endfor %}
+{% endblock %}
