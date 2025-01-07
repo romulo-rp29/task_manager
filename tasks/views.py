@@ -20,12 +20,27 @@ def index(request):
     return render(request, "home.html", context)
 
 
+def tasks_list(request):
+    status_filter = request.GET.get("status")
+
+    if status_filter == "completed":
+        tasks = Task.objects.filter(completed=True)
+    elif status_filter == "pending":
+        tasks = Task.objects.filter(completed=False)
+    else:
+        tasks = Task.objects.all()
+
+    context = {"tasks": tasks}
+
+    return render(request, "tasks_list.html", context)
+
+
 def create_task(request):
     if request.method == "POST":
         form = CreateTaskModelForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("/")
+            return redirect("/tasks/")
     else:
         form = CreateTaskModelForm()
 
@@ -43,7 +58,7 @@ def edit_task(request, task_id):
         form = CreateTaskModelForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            return redirect("/")
+            return redirect("/tasks/")
     else:
         form = CreateTaskModelForm(instance=task)
 
@@ -60,7 +75,7 @@ def delete_task(request, task_id):
 
     if request.method == "POST":
         task.delete()
-        return redirect("/")
+        return redirect(request.META.get("HTTP_REFERER"))
 
     context = {
         "task": task,
@@ -69,8 +84,8 @@ def delete_task(request, task_id):
     return render(request, "delete_task.html", context)
 
 
-def toggle_task_completion(_request, task_id):
+def toggle_task_completion(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.completed = not task.completed
     task.save()
-    return redirect("/")
+    return redirect(request.META.get("HTTP_REFERER"))
