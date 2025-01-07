@@ -5,49 +5,14 @@
 {% endblock %}
 
 {% block content %}
+    <navbar>
+        <a href="{% url 'tasks_list' %}">Lista de tarefas</a> |
+        <a href="{% url 'create_task' %}">Adicionar tarefa</a>
+    </navbar>
     <h1>Gerenciador de Tarefas</h1>
-
-    <h2>Adicionar tarefa:</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Adicionar" />
-    </form>
-
-    <h2>Tarefas:</h2>
-    <ul>
-        {% for task in tasks %}
-            <li>
-                {{ task }} 
-                
-                {% if task.completed %}
-                    <span style="color: green;">(Concluída)</span>
-                {% else %}
-                    <span style="color: red;">(Pendente)</span>
-                {% endif %}
-
-                <form method="post" action="{% url 'toggle_task_completion' task.id %}" style="display:inline;">
-                    {% csrf_token %}
-                    {% if not task.completed %}
-                        <button type="submit">Marcar como concluída</button>
-                    {% else %}
-                        <button type="submit">Marcar como pendente</button>
-                    {% endif %}
-                </form>
-
-                <a href="{% url 'edit_task' task.id %}">Editar</a>
-
-                <form method="post" action="{% url 'delete_task' task.id %}" style="display:inline;" onsubmit="return confirmDelete();">
-                    {% csrf_token %}
-                    <button type="submit">Deletar</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <script>
-        function confirmDelete() {
-            return confirm('Tem certeza de que deseja excluir esta tarefa?');
-        }
-    </script>
+    <!-- <div>
+        {% include 'tasks_list.html' %}
+    </div> -->
+    <a href="{% url 'tasks_list' %}">Lista de tarefas</a> |
+    <a href="{% url 'create_task' %}">Adicionar tarefa</a>
 {% endblock %}
