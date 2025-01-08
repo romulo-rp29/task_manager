@@ -1,6 +1,10 @@
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from tasks.models import Task
 from tasks.forms import CreateTaskModelForm
+from tasks.models import Task
 
 
 def index(request):
@@ -20,6 +24,48 @@ def index(request):
     return render(request, "home.html", context)
 
 
+def register(request):
+    if request.method == "GET":
+        return render(request, "register.html")
+    else:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = User.objects.filter(username=username).first()
+
+        if user:
+
+            return HttpResponse("Já existe um usuário com esse nome")
+
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+
+        return redirect("/login/")
+
+
+def user_login(request):
+    if request.method == "GET":
+        return render(request, "login.html")
+    else:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            login(request, user)
+
+            return redirect("/tasks/")
+        else:
+            return HttpResponse("Usuário ou senha inválidos")
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("/")
+
+
+@login_required(login_url="/login/")
 def tasks_list(request):
     status_filter = request.GET.get("status")
 
@@ -35,6 +81,7 @@ def tasks_list(request):
     return render(request, "tasks_list.html", context)
 
 
+@login_required(login_url="/login/")
 def create_task(request):
     if request.method == "POST":
         form = CreateTaskModelForm(request.POST)
@@ -51,6 +98,7 @@ def create_task(request):
     return render(request, "create_task.html", context)
 
 
+@login_required(login_url="/login/")
 def edit_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
@@ -70,6 +118,7 @@ def edit_task(request, task_id):
     return render(request, "edit_task.html", context)
 
 
+@login_required(login_url="/login/")
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
@@ -84,6 +133,7 @@ def delete_task(request, task_id):
     return render(request, "delete_task.html", context)
 
 
+@login_required(login_url="/login/")
 def toggle_task_completion(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.completed = not task.completed
