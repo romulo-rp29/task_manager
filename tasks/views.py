@@ -70,11 +70,11 @@ def tasks_list(request):
     status_filter = request.GET.get("status")
 
     if status_filter == "completed":
-        tasks = Task.objects.filter(completed=True)
+        tasks = Task.objects.filter(user=request.user, completed=True)
     elif status_filter == "pending":
-        tasks = Task.objects.filter(completed=False)
+        tasks = Task.objects.filter(user=request.user, completed=False)
     else:
-        tasks = Task.objects.all()
+        tasks = Task.objects.filter(user=request.user)
 
     context = {"tasks": tasks}
 
@@ -86,7 +86,9 @@ def create_task(request):
     if request.method == "POST":
         form = CreateTaskModelForm(request.POST)
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+            task.user = request.user
+            task.save()
             return redirect("/tasks/")
     else:
         form = CreateTaskModelForm()
