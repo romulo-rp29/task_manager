@@ -15,7 +15,7 @@ Uma aplicação web simples para gerenciamento de tarefas diárias. Desenvolvida
 
 ### Extras
 - **Autenticação de Usuário:** Apenas usuários autenticados podem acessar o sistema.
-- **Proteção de Dados:** :construction: Em Construção :construction:
+- **Proteção de Dados:** Cada usuário só pode acessar suas próprias tarefas.
 - **Filtros:** Exibição de tarefas por status (pendentes ou concluídas).
 
 ---
@@ -99,7 +99,7 @@ project_root/
 
 1. **Modelos:**
    - `Task`: Armazena as informações das tarefas.
-   - Campos: `title`, `description`, `completed`, `created_at`, `due_date`, :construction: `user`. :construction:
+   - Campos: `title`, `description`, `completed`, `created_at`, `due_date`, `user`.
 
 2. **Views:**
    - Criar, listar, editar e excluir tarefas.
