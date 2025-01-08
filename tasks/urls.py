@@ -5,6 +5,9 @@ from tasks import views
 
 urlpatterns = [
     path("", index, name="home-page"),
+    path("register/", views.register, name="register"),
+    path("login/", views.user_login, name="login"),
+    path("logout/", views.user_logout, name="logout"),
     path("tasks/", views.tasks_list, name="tasks_list"),
     path("create/", views.create_task, name="create_task"),
     path("task/<int:task_id>/edit/", views.edit_task, name="edit_task"),
