@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'home-page' %}">Página inicial</a> |
-    <a href="{% url 'create_task' %}">Adicionar tarefa</a>
+    <a href="{% url 'home-page' %}">Página inicial</a>
+    <p>Bem-vindo(a), {{ user.username }}!</p>
+    <a href="{% url 'logout' %}">Sair</a>
     <h1>Lista de Tarefas</h1>
     <div>
         <a href="{% url 'tasks_list' %}">Todas</a> |

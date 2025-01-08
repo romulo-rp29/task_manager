@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block content %}
+    <p>Bem-vindo(a), {{ user.username }}!</p>
+    <a href="{% url 'logout' %}">Sair</a>
     <a href="{% url 'home-page' %}">Página inicial</a> |
     <a href="{% url 'create_task' %}">Adicionar tarefa</a>
     <h1>Editar Tarefa</h1>

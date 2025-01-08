@@ -5,8 +5,13 @@
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'home-page' %}">Página inicial</a> |
-<a href="{% url 'tasks_list' %}">Lista de tarefas</a> |
+    <a href="{% url 'home-page' %}">Página inicial</a> |
+    <a href="{% url 'tasks_list' %}">Lista de tarefas</a>
+    <br>
+    <br>
+    <p>Bem-vindo(a), {{ user.username }}!</p>
+    <a href="{% url 'logout' %}">Sair</a>
+
     <h1>Nova tarefa</h1>
 
     <form method="post">
